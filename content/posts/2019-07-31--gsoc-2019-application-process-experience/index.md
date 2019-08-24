@@ -1,6 +1,6 @@
 ---
 title: My GSoC 2019 application process experience
-category: "experience"
+category: "gsoc-2019"
 cover: gsoc.png
 author: sahil jajodia
 ---
