@@ -22,27 +22,27 @@ With large datasets (usually in TBs) at CERN, Apache Spark is the standard for d
 ## Why do we need this extension
 This being the poject of SWAN, I will write this with respect to how it will be useful in SWAN. However, different organisations can have different use cases for this extension.
 
-* Currently SWAN does not support user managed K8s clusters for Spark. This extension will allow the support of user managed clusters.
-* After joining CERN, almost every user get some computing resources, but currently a user cannot use it for scalable
+- Currently SWAN does not support user managed K8s clusters for Spark. This extension will allow the support of user managed clusters.
+- After joining CERN, almost every user get some computing resources, but currently a user cannot use it for scalable
 data analysis inside SWAN notebooks. This will allow them to quickly create cluster, use it and then dispose it again.
-* If due to some reason the cluster is not responding, then currently it is hard to use another cluster. This extension can handle more than one cluster.
-* Users (mostly physicists) of SWAN wants to do data analysis of the large datasets that they have using Spark. They dont want to execute complex kubernetes commands to setup K8s clusters for Spark. This extension serves them by doing most of the work in the backend.
+- If due to some reason the cluster is not responding, then currently it is hard to use another cluster. This extension can handle more than one cluster.
+- Users (mostly physicists) of SWAN wants to do data analysis of the large datasets that they have using Spark. They dont want to execute complex kubernetes commands to setup K8s clusters for Spark. This extension serves them by doing most of the work in the backend.
 
 ## Features
 Note: Here the word cluster always refers to a Kubernetes cluster.
-* Parsing and showing all the clusters available to use from the KUBECONFIG file
+- Parsing and showing all the clusters available to use from the KUBECONFIG file
     ![main-window](1.png)
     As shown in the above image, I am parsing all the clusters and contexts from the KUBECONFIG file, doing some processing in the backend to get the cluster's authentication method and remember it. Here as I am using Token authentication mode, the Share button is disabled. The `+` FAB can be used to go to the Add Cluster state.
-* Delete obsolete or unused clusters from the KUBECONFIG file
+- Delete obsolete or unused clusters from the KUBECONFIG file
     ![delete-button](2.png)
     If you keep adding the cluster's one by one using this extension, the KUBECONFIG file can fill up very quickly and become messy. So there is always a delete option which you can use to delete the entities (cluster, context, user) from the KUBECONFIG file. And as my extension parses the KUBECONFIG file, it would be deleted from the above cluster list as well.
-* Add your own cluster (if you are an admin) or Add clusters shared by admin to you, in the KUBECONFIG file. It allows a couple of different modes of authentication
+- Add your own cluster (if you are an admin) or Add clusters shared by admin to you, in the KUBECONFIG file. It allows a couple of different modes of authentication
     ![add-clusters](3.png)
     Here, I have created a tab layout for different modes of authentication. The token mode is the most basic and most widely used mode of authentication. However if you are using Openstack cloud in your organisation, it is always recommended that you use Openstack mode of authentication. Currently, at SWAN, Token mode is used but slowly Openstack mode of authentication is becoming the standard because it is more secure. Also, I have included the Gcloud mode but it is currently not implemented. It is just to show that this feature can be extended according to your needs.
-* Displaying whether you are successfully connected to a cluster.
+- Displaying whether you are successfully connected to a cluster.
     ![connect-cluster](4.png)
     Every cluster has a SELECT button. After you click on the select button, I perform checks in the background that whether you are currently reachable to this cluster or not and whether you are the admin of the cluster. Accordingly after getting the data on the frontend, I show the appropriate status and enable/disable the share button. If you are successfully connected to a cluster, you can offload Spark (currently) or any services to the cluster.
-* You can share your cluster with other user (so that they can use your cluster to offload services). **This feature however currently only works for SWAN because sharing is very complex and every organisation has a different method for sharing resources. Also if sharing is not implemented properly, it could present some security issues. So in short, in SWAN, if the authentication mode is `Openstack` and if the user is `admin` of the cluster, then only the share button is enabled**.
+- You can share your cluster with other user (so that they can use your cluster to offload services). **This feature however currently only works for SWAN because sharing is very complex and every organisation has a different method for sharing resources. Also if sharing is not implemented properly, it could present some security issues. So in short, in SWAN, if the authentication mode is `Openstack` and if the user is `admin` of the cluster, then only the share button is enabled**.
     ![grant-access](5.png)
     You can get to the above state after clicking on the share button. Here I take the CERN username of the user and also the email (which is almost always USER@cern.ch for CERN users). After clicking on the CreateUser button, I deploy the **Helm Chart** on the currently selected cluster. Now, Helm Chart is just a yaml file (basically yes but it is more complex than that) which can be used to deploy all the required resources from a single command, rather than using multiple commands. It also has other advantages which can be leveraged.
     ![get-details](6.png)
@@ -52,9 +52,9 @@ Note: Here the word cluster always refers to a Kubernetes cluster.
 ## Future Work
 The work that can be done to make this jupyter notebook extension more useful in the future.
 
-* Adding GCloud (and similarly other) mode to use GKE clusters for spark
-* Creating abstractions (functions) so it is easy to extend
-* Making it useful for services other than spark. E.g Distributed Tensorflow (Currently it is only useful for Spark)
+- Adding GCloud (and similarly other) mode to use GKE clusters for spark
+- Creating abstractions (functions) so it is easy to extend
+- Making it useful for services other than spark. E.g Distributed Tensorflow (Currently it is only useful for Spark)
 
 ## Conclusion
 To conclude the report I would say that the result of this project is an Easy to use jupyter notebook extension which has diverse use cases at SWAN and which allow users to take advantage of their resources and perform data analysis. Also, I would like to thank my mentors - **Prasanth Kothuri**, **Piotr Mrowczynski**, **Enric Tejedor Saavedra** and **Diogo Castro**. They helped me a lot during the project and helped me identify critical issues and bugs. Although this project was not very complex from the technology point of view but there were a lot of dots which were to be connected and I had to understand the working of 3 different systems (Jupyter Notebook extensions, Spark and Kubernetes) and my mentors helped me a lot to do that.
