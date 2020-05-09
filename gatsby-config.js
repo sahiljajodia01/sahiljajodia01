@@ -260,6 +260,12 @@ module.exports = {
       options: {
         include: /svg-icons/
       }
-    }
+    },
+    {
+      resolve: `gatsby-plugin-google-analytics`,
+      options: {
+        trackingId: "UA-165993438-1",
+      },
+    },
   ]
 };
